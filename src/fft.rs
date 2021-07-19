@@ -2,7 +2,7 @@ use rustfft::{algorithm::Radix4, Fft, FftDirection};
 use rustfft::num_complex::Complex32;
 
 pub trait TFftProcessor {
-    fn new(size: usize) -> Self;
+    fn new(size: usize) -> Self where Self: Sized;
     fn forward(&mut self, buffer: &Vec<f32>) -> Vec<Complex32>;
     fn inverse(&mut self, complex_buffer: Vec<Complex32>)-> Vec<f32>;
 }
