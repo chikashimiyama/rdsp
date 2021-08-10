@@ -1,4 +1,4 @@
 pub trait TInPlaceProcessor
 {
-    fn process(input: &mut Vec<f32>);
+    fn process(&self, input: &mut Vec<f32>);
 }

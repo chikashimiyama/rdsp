@@ -1,32 +1,33 @@
-use rustfft::{algorithm::Radix4, Fft, FftDirection};
+use rustfft::{algorithm::Radix4, Fft as Rfft, FftDirection};
 use rustfft::num_complex::Complex32;
 
-pub trait TFftProcessor {
-    fn new(size: usize) -> Self where Self: Sized;
-    fn forward(&mut self, buffer: &Vec<f32>) -> Vec<Complex32>;
-    fn inverse(&mut self, complex_buffer: Vec<Complex32>)-> Vec<f32>;
+pub trait TFft {
+    fn forward(&self, buffer: &Vec<f32>) -> Vec<Complex32>;
+    fn inverse(&self, complex_buffer: Vec<Complex32>)-> Vec<f32>;
 }
 
-pub struct FftProcessor{
+pub struct Fft {
     forward: Radix4<f32>,
     inverse: Radix4<f32>
 }
 
-impl TFftProcessor for FftProcessor {
-    fn new(size: usize) -> Self {
-        FftProcessor {
+impl Fft{
+    pub fn new(size: usize) -> Self {
+        Fft {
             forward: Radix4::new(size, FftDirection::Forward),
             inverse: Radix4::new(size, FftDirection::Inverse),
         }
     }
+}
 
-    fn forward(&mut self, buffer: &Vec<f32>) -> Vec<Complex32> {
+impl TFft for Fft {
+    fn forward(&self, buffer: &Vec<f32>) -> Vec<Complex32> {
         let mut complex_buffer= to_complex_buffer(buffer);
         self.forward.process(&mut complex_buffer);
         complex_buffer
     }
 
-    fn inverse(&mut self, mut complex_buffer: Vec<Complex32>) -> Vec<f32> {
+    fn inverse(&self, mut complex_buffer: Vec<Complex32>) -> Vec<f32> {
         self.inverse.process(&mut complex_buffer);
         to_buffer(&complex_buffer)
     }

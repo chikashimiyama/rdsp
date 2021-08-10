@@ -1,8 +1,6 @@
 #[cfg(test)]
 
 use rdsp::factory::*;
-use rdsp::fft::FftProcessor;
-use std::ptr::null;
 
 #[test]
 fn create_fft() {
