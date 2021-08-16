@@ -1,11 +1,9 @@
-pub trait TBlockRing {
-    fn push(&mut self, block: Vec<f32>);
-    fn traverse<F>(&self, func: F) where F: FnMut(&Vec<f32>);
-}
+use crate::traits::TBlockRing;
 
 pub struct BlockRing {
     buffer : Vec<Vec<f32>>,
     write_index : i32,
+    count : usize,
 }
 
 impl BlockRing {
@@ -16,9 +14,10 @@ impl BlockRing {
             block.resize(block_size, 0.0);
             buf.push(block);
         }
-        BlockRing{
+        Self{
             buffer : buf,
             write_index : (num_blocks - 1) as i32,
+            count : 0
         }
     }
 }
@@ -32,19 +31,24 @@ impl TBlockRing for BlockRing {
         }
         self.buffer[self.write_index as usize] = block;
     }
-
-    fn traverse<F>(&self, mut func: F) where F: FnMut(&Vec<f32>) {
-        let buffer_length = self.buffer.len() as i32;
-        let write_index = self.write_index;
-
-        for i in 0..buffer_length{
-            let mut index = write_index - i;
-            if index < 0 { index += buffer_length; }
-            func(&self.buffer[index as usize]);
-        }
-    }
 }
 
+impl Iterator for BlockRing{
+    type Item = Vec<f32>;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        if self.count >= self.buffer.len() {
+           return None;
+        }
+
+        let mut index = self.write_index - self.count as i32;
+        if index < 0 { index += self.buffer.len() as i32; }
+
+        let block = self.buffer[index as usize].to_vec();
+        self.count += 1;
+        return Some(block);
+    }
+}
 
 
 

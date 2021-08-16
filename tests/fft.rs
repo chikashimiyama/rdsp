@@ -1,9 +1,11 @@
 #[cfg(test)]
 
-use rdsp::fourier_transform::*;
 use rstest::*;
 use assert_approx_eq::*;
-use rustfft::num_complex::Complex32;
+
+use rdsp::complex::Complex;
+use rdsp::traits::TFft;
+use rdsp::fourier_transform::*;
 
 #[rstest]
 #[case(32)]
@@ -12,7 +14,7 @@ use rustfft::num_complex::Complex32;
 #[case(512)]
 #[case(2048)]
 fn forward_inverse(#[case] size: usize) {
-    let mut fft: Fft = Fft::new(size);
+    let fft: Fft = Fft::new(size);
     let mut buffer: Vec<f32> = vec![0.0; size];
     buffer[30] = 1.0;
 
@@ -24,13 +26,13 @@ fn forward_inverse(#[case] size: usize) {
 
 #[test]
 fn dirac() {
-    let mut fft: Fft = Fft::new(256);
+    let fft: Fft = Fft::new(256);
     let mut buffer: Vec<f32> = vec![0.0; 256];
     buffer[6] = 0.5;
 
     let complex_buffer_a = fft.forward(&buffer);
     let complex_buffer_b = fft.forward(&buffer);
-    let mut complex_buffer_c: Vec<Complex32> = vec![ Complex32::new(0.0, 0.0); 256];
+    let mut complex_buffer_c = vec![ Complex{real:0.0, imaginary:0.0}; 256];
 
     for i in 0..256 {
         complex_buffer_c[i] = complex_buffer_a[i] * complex_buffer_b[i];
