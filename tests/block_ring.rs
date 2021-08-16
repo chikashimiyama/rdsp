@@ -41,3 +41,18 @@ fn push_ring_buffer() {
         index -= 1;
     };
 }
+
+#[test]
+fn reset() {
+
+    let content : Vec<f32> = vec![0.0, 1.0, 2.0];
+    let mut block_ring = BlockRing::new(1, 3);
+    for i in 0..3{
+        block_ring.push(vec![content[i]]);
+    }
+
+    assert_eq!(block_ring.next().unwrap()[0], 2.0);
+    assert_eq!(block_ring.next().unwrap()[0], 1.0);
+    block_ring.reset();
+    assert_eq!(block_ring.next().unwrap()[0], 2.0);
+}

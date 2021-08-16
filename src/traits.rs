@@ -12,7 +12,9 @@ pub trait TIterator<T> {
 
 pub trait TBlockRing : TIterator<f32>{
     fn push(&mut self, block: Vec<f32>);
+}
 
+pub trait TIRData : TIterator<Complex>{
 }
 
 pub trait TFft {
