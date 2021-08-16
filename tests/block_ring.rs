@@ -5,11 +5,9 @@ use rdsp::block_ring::*;
 
 #[test]
 fn new_blocks_filled_with_zeros() {
-    let block_ring = BlockRing::new(3, 2);
-    let mut index = 0;
-    for block in block_ring {
-        assert_eq!(0.0, block[index]);
-        index += 1;
+    let mut block_ring = BlockRing::new(3, 2);
+    while let Some(block) = block_ring.next()  {
+        assert_eq!(0.0, block[0]);
     }
 }
 
@@ -22,10 +20,10 @@ fn push() {
     block_ring.push(vec![content[2]]);
 
     let mut index : i32 = 2;
-    block_ring.into_iter().for_each(|block| {
-        assert_eq!(block[0], content[index as usize]);
+    while let Some(block) = block_ring.next()  {
+        assert_eq!(content[index as usize], block[0]);
         index -= 1;
-    });
+    };
 }
 
 #[test]
@@ -38,8 +36,8 @@ fn push_ring_buffer() {
     }
 
     let mut index : i32 = 2;
-    for block in block_ring {
-        assert_eq!(block[0], content[(index + 3) as usize]);
+    while let Some(block) = block_ring.next()  {
+        assert_eq!(content[index as usize + 3], block[0]);
         index -= 1;
-    }
+    };
 }

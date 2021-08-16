@@ -5,10 +5,14 @@ pub trait TInPlaceProcessor
     fn process(&self, input: &mut Vec<f32>);
 }
 
-pub trait TBlockRing {
-    fn push(&mut self, block: Vec<f32>);
-    fn next(&mut self)->&Vec<f32>;
+pub trait TIterator<T> {
+    fn next(&mut self)->Option<&Vec<T>>;
     fn reset(&mut self);
+}
+
+pub trait TBlockRing : TIterator<f32>{
+    fn push(&mut self, block: Vec<f32>);
+
 }
 
 pub trait TFft {
