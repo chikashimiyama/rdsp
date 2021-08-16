@@ -31,6 +31,20 @@ impl TBlockRing for BlockRing {
         }
         self.buffer[self.write_index as usize] = block;
     }
+
+    fn next(&mut self) -> &Vec<f32> {
+        let mut index = self.write_index as i32 - self.count as i32;
+        if index < 0{
+            index += self.buffer.len() as i32;
+        }
+        let block = &self.buffer[index as usize];
+        self.count += 1;
+        block
+    }
+
+    fn reset(&mut self){
+        self.count = 0;
+    }
 }
 
 impl Iterator for BlockRing{
