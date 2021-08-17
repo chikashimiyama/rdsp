@@ -1,4 +1,4 @@
-use crate::traits::{TIterator, TFft};
+use crate::traits::{TIterator, TFft, TIRData};
 use crate::complex::Complex;
 use crate::fourier_transform::Fft;
 
@@ -40,6 +40,8 @@ impl IRData {
     }
 }
 
+impl TIRData for IRData{}
+
 impl TIterator<Complex> for IRData{
     fn next(&mut self) -> Option<&Vec<Complex>> {
         if self.count >= self.complex_blocks.len(){
@@ -54,3 +56,4 @@ impl TIterator<Complex> for IRData{
         self.count = 0;
     }
 }
+
