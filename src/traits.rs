@@ -1,4 +1,5 @@
 use crate::complex::Complex;
+use mockall::*;
 
 pub trait TInPlaceProcessor
 {
@@ -17,12 +18,8 @@ pub trait TBlockRing : TIterator<f32>{
 pub trait TIRData : TIterator<Complex>{
 }
 
+#[automock]
 pub trait TFft {
     fn forward(&self, buffer: &Vec<f32>) -> Vec<Complex>;
     fn inverse(&self, complex_buffer: Vec<Complex>)-> Vec<f32>;
-}
-
-pub trait TFactory {
-    fn create_fft(&self, size: usize) -> Box<dyn TFft>;
-    fn create_block_ring(&self, block_size: usize, num_blocks: usize)-> Box<dyn TBlockRing>;
 }

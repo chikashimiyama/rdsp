@@ -8,11 +8,11 @@ use rdsp::traits::TFft;
 use rdsp::fourier_transform::*;
 
 #[rstest]
-#[case(32)]
-#[case(64)]
-#[case(128)]
-#[case(512)]
-#[case(2048)]
+#[case::block_size32(32)]
+#[case::block_size64(64)]
+#[case::block_size128(128)]
+#[case::block_size512(512)]
+#[case::block_size2048(2048)]
 fn forward_inverse(#[case] size: usize) {
     let fft: Fft = Fft::new(size);
     let mut buffer: Vec<f32> = vec![0.0; size];
