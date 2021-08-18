@@ -3,7 +3,7 @@ use mockall::*;
 
 pub trait TProcessor
 {
-    fn process(&self, input: &mut Vec<f32>);
+    fn process(&mut self, input: &mut Vec<f32>);
 }
 
 pub trait TIterator<T> {
@@ -11,8 +11,8 @@ pub trait TIterator<T> {
     fn reset(&mut self);
 }
 
-pub trait TBlockRing : TIterator<f32>{
-    fn push(&mut self, block: Vec<f32>);
+pub trait TBlockRing<T> : TIterator<T>{
+    fn push(&mut self, block: Vec<T>);
 }
 
 pub trait TComplexIR: TIterator<Complex>{

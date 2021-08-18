@@ -7,9 +7,10 @@ use crate::utility::*;
 
 pub fn create_convolution_processor(block_size: usize, ir_data: &Vec<f32>)->ConvolutionProcessor{
 
-    let fft = Fft::new(block_size);
+    let block_size_doubled = block_size * 2;
+    let fft = Fft::new(block_size_doubled);
     let complex_ir = ComplexIR::new(block_size, ir_data, fft);
     let num_blocks = get_num_blocks(block_size, ir_data.len());
     let block_ring = BlockRing::new(block_size, num_blocks);
-    ConvolutionProcessor::new(complex_ir, block_ring)
+    ConvolutionProcessor::new(block_size, complex_ir, block_ring, Fft::new(block_size_doubled))
 }
