@@ -4,10 +4,10 @@ use rdsp::traits::*;
 use rdsp::block_ring::*;
 
 #[test]
-fn new_blocks_filled_with_zeros() {
-    let mut block_ring = BlockRing::new(3, 2);
+fn new_blocks_are_empty() {
+    let mut block_ring : BlockRing<f32> = BlockRing::new(3, 2);
     while let Some(block) = block_ring.next()  {
-        assert_eq!(0.0, block[0]);
+        assert_eq!(0, block.len());
     }
 }
 
