@@ -2,7 +2,7 @@
 use rstest::*;
 use mockall::predicate;
 
-use rdsp::ir_data::IRData;
+use rdsp::complex_ir::ComplexIR;
 use rdsp::traits::{MockTFft, TIterator};
 use rdsp::complex::Complex;
 
@@ -24,7 +24,7 @@ fn construction(#[case] ir_data_size: usize, #[case] num_blocks: usize) {
             complex
         });
 
-    IRData::new(64, &ir_data, mock_fft);
+    ComplexIR::new(64, &ir_data, mock_fft);
 }
 
 #[rstest]
@@ -40,7 +40,7 @@ fn next()
             complex
         });
 
-    let mut ir_data =  IRData::new(64, &ir, mock_fft);
+    let mut ir_data =  ComplexIR::new(64, &ir, mock_fft);
 
     assert_eq!(true, ir_data.next().is_some());
     assert_eq!(true, ir_data.next().is_some());

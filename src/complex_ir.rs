@@ -1,22 +1,17 @@
-use crate::traits::{TIterator, TFft, TIRData};
+use crate::traits::{TIterator, TFft, TComplexIR};
 use crate::complex::Complex;
 use crate::fourier_transform::Fft;
+use crate::utility::*;
 
-pub struct IRData{
+pub struct ComplexIR {
     complex_blocks : Vec<Vec<Complex>>,
     count : usize
 }
 
-impl IRData {
+impl ComplexIR {
     pub fn new<T : TFft>(block_size: usize, ir_data: &Vec<f32>, fft: T)->Self{
 
-        let mut num_blocks : usize;
-        {
-            num_blocks = ir_data.len()/block_size;
-            if ir_data.len() % block_size > 0 {
-                num_blocks += 1;
-            }
-        }
+        let mut num_blocks = get_num_blocks(block_size, ir_data.len());
 
         let mut padded_ir : Vec<f32>;
         {
@@ -33,16 +28,16 @@ impl IRData {
             }
         }
 
-        IRData{
+        ComplexIR {
             complex_blocks,
             count: 0
         }
     }
 }
 
-impl TIRData for IRData{}
+impl TComplexIR for ComplexIR {}
 
-impl TIterator<Complex> for IRData{
+impl TIterator<Complex> for ComplexIR {
     fn next(&mut self) -> Option<&Vec<Complex>> {
         if self.count >= self.complex_blocks.len(){
             return None

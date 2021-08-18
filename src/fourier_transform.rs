@@ -10,10 +10,10 @@ pub struct Fft {
 }
 
 impl Fft{
-    pub fn new(size: usize) -> Self {
+    pub fn new(block_size: usize) -> Self {
         Self {
-            forward: Radix4::new(size, FftDirection::Forward),
-            inverse: Radix4::new(size, FftDirection::Inverse),
+            forward: Radix4::new(block_size, FftDirection::Forward),
+            inverse: Radix4::new(block_size, FftDirection::Inverse),
         }
     }
 }
