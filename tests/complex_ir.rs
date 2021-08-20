@@ -1,6 +1,5 @@
 #[cfg(test)]
 use rstest::*;
-use mockall::predicate;
 
 use rdsp::complex_ir::ComplexIR;
 use rdsp::traits::{MockTFft, TIterator};
@@ -27,14 +26,14 @@ fn construction(#[case] ir_data_size: usize, #[case] num_blocks: usize) {
     ComplexIR::new(64, &ir_data, mock_fft);
 }
 
-#[rstest]
+#[test]
 fn next()
 {
     let mut ir :  Vec<f32> = Vec::new();
     ir.resize(65, 0.0);
     let mut mock_fft = MockTFft::new();
     mock_fft.expect_forward()
-        .returning(|block| {
+        .returning(|_| {
             let mut complex : Vec<Complex>= Vec::new();
             complex.resize(64, Complex::new(0.0, 0.0));
             complex

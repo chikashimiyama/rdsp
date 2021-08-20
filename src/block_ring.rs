@@ -1,28 +1,24 @@
 use crate::traits::{TBlockRing, TIterator};
+use crate::complex::Complex;
 
-pub struct BlockRing<T> {
-    buffer : Vec<Vec<T>>,
+pub struct BlockRing {
+    buffer : Vec<Vec<Complex>>,
     write_index : i32,
     count : usize,
 }
 
-impl <T> BlockRing<T> {
-    pub fn new(num_blocks: usize) -> Self{
-        let mut buf: Vec<Vec<T>> = Vec::new();
-        for _ in 0..num_blocks {
-            let block : Vec<T> = Vec::new();
-            buf.push(block);
-        }
+impl BlockRing {
+    pub fn new(block_size: usize, num_blocks: usize) -> Self{
         Self{
-            buffer : buf,
-            write_index : (num_blocks - 1) as i32,
+            buffer : vec![vec![Complex::new(0.0, 0.0); block_size]; num_blocks],
+            write_index : num_blocks as i32 - 1,
             count : 0
         }
     }
 }
 
-impl <T> TBlockRing<T> for BlockRing<T> {
-    fn push(&mut self, block: Vec<T>) {
+impl TBlockRing for BlockRing {
+    fn push(&mut self, block: Vec<Complex>) {
         self.write_index += 1;
         if self.write_index == self.buffer.len() as i32 {
             self.write_index = 0;
@@ -31,8 +27,8 @@ impl <T> TBlockRing<T> for BlockRing<T> {
     }
 }
 
-impl <T> TIterator<T> for BlockRing<T>{
-    fn next(&mut self) -> Option<&Vec<T>> {
+impl TIterator<Complex> for BlockRing{
+    fn next(&mut self) -> Option<&Vec<Complex>> {
         if self.count >= self.buffer.len(){
             return None;
         }

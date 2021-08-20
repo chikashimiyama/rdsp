@@ -4,7 +4,7 @@ use crate::complex_ir::ComplexIR;
 use crate::fourier_transform::Fft;
 use crate::complex::Complex;
 
-pub struct ConvolutionProcessor<I: TComplexIR = ComplexIR, B:TBlockRing<Complex> = BlockRing<Complex>, F:TFft = Fft>{
+pub struct ConvolutionProcessor<I: TComplexIR = ComplexIR, B:TBlockRing = BlockRing, F:TFft = Fft>{
     double_size_buffer: Vec<f32>,
     previous_second_half : Vec<f32>,
     complex_ir : I,
@@ -12,7 +12,7 @@ pub struct ConvolutionProcessor<I: TComplexIR = ComplexIR, B:TBlockRing<Complex>
     fft : F,
 }
 
-impl <I: TComplexIR, B:TBlockRing<Complex>, F:TFft> ConvolutionProcessor<I, B, F>{
+impl <I: TComplexIR, B:TBlockRing, F:TFft> ConvolutionProcessor<I, B, F>{
     pub fn new(block_size: usize, complex_ir : I, block_ring : B, fft: F)->Self{
         Self{
             double_size_buffer: vec![0.0; block_size * 2],
@@ -41,8 +41,8 @@ impl TProcessor for ConvolutionProcessor{
         self.complex_ir.reset();
         let mut accum : Vec<f32> = vec![0.0; block_size * 2];
 
-        let maybe_input_block = self.block_ring.next();
-        while let Some(input_block) = maybe_input_block {
+        for _ in 0..self.block_ring.len(){
+            let input_block = self.block_ring.next().unwrap();
             let filter_block = self.complex_ir.next().unwrap();
             let mut convoluted: Vec<Complex> = Vec::with_capacity(block_size * 2);
             for sample_pair in input_block.iter().zip(filter_block.iter()){

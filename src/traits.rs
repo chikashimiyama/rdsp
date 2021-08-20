@@ -12,8 +12,8 @@ pub trait TIterator<T> {
     fn len(&self)->usize;
 }
 
-pub trait TBlockRing<T> : TIterator<T>{
-    fn push(&mut self, block: Vec<T>);
+pub trait TBlockRing : TIterator<Complex>{
+    fn push(&mut self, block: Vec<Complex>);
 }
 
 pub trait TComplexIR: TIterator<Complex>{
