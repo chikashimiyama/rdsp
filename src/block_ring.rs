@@ -1,22 +1,19 @@
 use crate::traits::{TBlockRing, TIterator};
-use crate::complex::Complex;
 
 pub struct BlockRing<T> {
-    block_size: usize,
     buffer : Vec<Vec<T>>,
     write_index : i32,
     count : usize,
 }
 
 impl <T> BlockRing<T> {
-    pub fn new(block_size: usize, num_blocks: usize) -> Self{
+    pub fn new(num_blocks: usize) -> Self{
         let mut buf: Vec<Vec<T>> = Vec::new();
         for _ in 0..num_blocks {
-            let mut block : Vec<T> = Vec::new();
+            let block : Vec<T> = Vec::new();
             buf.push(block);
         }
         Self{
-            block_size,
             buffer : buf,
             write_index : (num_blocks - 1) as i32,
             count : 0

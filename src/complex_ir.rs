@@ -1,6 +1,5 @@
 use crate::traits::{TIterator, TFft, TComplexIR};
 use crate::complex::Complex;
-use crate::fourier_transform::Fft;
 use crate::utility::*;
 
 pub struct ComplexIR {
@@ -11,7 +10,7 @@ pub struct ComplexIR {
 impl ComplexIR {
     pub fn new<T : TFft>(block_size: usize, ir_data: &Vec<f32>, fft: T)->Self{
 
-        let mut num_blocks = get_num_blocks(block_size, ir_data.len());
+        let num_blocks = get_num_blocks(block_size, ir_data.len());
 
         let mut padded_ir : Vec<f32>;
         {

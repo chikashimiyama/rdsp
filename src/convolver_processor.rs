@@ -41,17 +41,17 @@ impl TProcessor for ConvolutionProcessor{
         self.complex_ir.reset();
         let mut accum : Vec<f32> = vec![0.0; block_size * 2];
 
-        let mut maybe_input_block = self.block_ring.next();
+        let maybe_input_block = self.block_ring.next();
         while let Some(input_block) = maybe_input_block {
             let filter_block = self.complex_ir.next().unwrap();
             let mut convoluted: Vec<Complex> = Vec::with_capacity(block_size * 2);
             for sample_pair in input_block.iter().zip(filter_block.iter()){
                 let (input, filter) = sample_pair;
-                let result = input * filter; // complex multiplication
+                let result = *input * *filter; // complex multiplication
                 convoluted.push(result);
             }
-            let processed = self.fft(convoluted);
-            for i in block_size{
+            let processed = self.fft.inverse(convoluted);
+            for i in 0..block_size{
                 accum[i] += processed[i];
             }
         }
