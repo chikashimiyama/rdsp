@@ -23,7 +23,8 @@ impl ComplexIR {
         {
             complex_blocks = Vec::with_capacity(num_blocks);
             for i in 0..num_blocks {
-                let block = padded_ir[i * block_size..(i + 1) * block_size].to_vec();
+                let mut block = padded_ir[i * block_size..(i + 1) * block_size].to_vec();
+                block.resize(block_size * 2, 0.0);
                 complex_blocks.push(fft.forward(&block));
             }
         }
@@ -49,6 +50,10 @@ impl TIterator<Complex> for ComplexIR {
 
     fn reset(&mut self) {
         self.count = 0;
+    }
+
+    fn len(&self) -> usize {
+        self.complex_blocks.len()
     }
 }
 

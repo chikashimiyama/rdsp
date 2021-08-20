@@ -52,4 +52,8 @@ impl <T> TIterator<T> for BlockRing<T>{
     fn reset(&mut self){
         self.count = 0;
     }
+
+    fn len(&self) -> usize {
+        self.buffer.len()
+    }
 }
