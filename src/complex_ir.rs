@@ -8,7 +8,7 @@ pub struct ComplexIR {
 }
 
 impl ComplexIR {
-    pub fn new<T : TFft>(block_size: usize, ir_data: &Vec<f32>, fft: T)->Self{
+    pub fn new<T : TFft>(block_size: usize, ir_data: &Vec<f32>, fft: &T)->Self{
 
         let num_blocks = get_num_blocks(block_size, ir_data.len());
 

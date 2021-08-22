@@ -7,16 +7,18 @@ use crate::complex::Complex;
 pub struct ConvolutionProcessor<I: TComplexIR = ComplexIR, B:TBlockRing = BlockRing, F:TFft = Fft>{
     double_size_buffer: Vec<f32>,
     previous_second_half : Vec<f32>,
+    accumulation_buffer: Vec<f32>,
     complex_ir : I,
     block_ring : B,
     fft : F,
 }
 
 impl <I: TComplexIR, B:TBlockRing, F:TFft> ConvolutionProcessor<I, B, F>{
-    pub fn new(block_size: usize, complex_ir : I, block_ring : B, fft: F)->Self{
+    pub fn new(block_size: &usize, complex_ir : I, block_ring : B, fft: F)->Self{
         Self{
             double_size_buffer: vec![0.0; block_size * 2],
-            previous_second_half: vec![0.0; block_size],
+            previous_second_half: vec![0.0; *block_size],
+            accumulation_buffer: vec![0.0; block_size * 2],
             complex_ir,
             block_ring,
             fft
@@ -33,13 +35,12 @@ impl TProcessor for ConvolutionProcessor{
             self.double_size_buffer[i+block_size] = 0.0;
         }
 
-        let complex_input = self.fft.forward(&self.double_size_buffer);
-        self.block_ring.push(complex_input);
+        self.block_ring.push(self.fft.forward(&self.double_size_buffer));
 
 
+        self.accumulation_buffer.fill(0.0);
         self.block_ring.reset();
         self.complex_ir.reset();
-        let mut accum : Vec<f32> = vec![0.0; block_size * 2];
 
         for _ in 0..self.block_ring.len(){
             let input_block = self.block_ring.next().unwrap();
@@ -52,13 +53,13 @@ impl TProcessor for ConvolutionProcessor{
             }
             let processed = self.fft.inverse(convoluted);
             for i in 0..block_size{
-                accum[i] += processed[i];
+                self.accumulation_buffer[i] += processed[i] / (block_size * 2) as f32;
             }
         }
 
         for i in 0..block_size{
-            input[i] = accum[i] + self.previous_second_half[i];
-            self.previous_second_half[i] = accum[i + block_size];
+            input[i] = self.accumulation_buffer[i] + self.previous_second_half[i];
+            self.previous_second_half[i] = self.accumulation_buffer[i + block_size];
         }
     }
 }

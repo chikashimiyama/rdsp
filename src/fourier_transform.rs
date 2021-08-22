@@ -28,7 +28,7 @@ impl TFft for Fft {
             let length = buffer.len();
             let mut complex_buffer : Vec<Complex32> = vec![Complex32::new(0.0, 0.0); length];
             for i in 0..length {
-                complex_buffer[i].re = buffer[i] / length as f32;
+                complex_buffer[i].re = buffer[i];
                 complex_buffer[i].im = 0.0;
             }
             complex_buffer

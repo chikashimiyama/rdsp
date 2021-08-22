@@ -21,14 +21,18 @@ fn forward_inverse(#[case] size: usize) {
     let complex_buffer = fft.forward(&buffer);
     let result = fft.inverse(complex_buffer);
 
-    assert_approx_eq!(result[30], 1.0, 0.0001);
+    assert_approx_eq!(result[30], 1.0 * size as f32, 0.0001);
 }
 
-#[test]
-fn dirac() {
+#[rstest]
+#[case::dirac_1(1)]
+#[case::dirac_50(50)]
+#[case::dirac_100(100)]
+#[case::dirac_127(127)]
+fn dirac(#[case] index: usize) {
     let fft: Fft = Fft::new(256);
     let mut buffer: Vec<f32> = vec![0.0; 256];
-    buffer[6] = 0.5;
+    buffer[index] = 0.5;
 
     let complex_buffer_a = fft.forward(&buffer);
     let complex_buffer_b = fft.forward(&buffer);
@@ -40,5 +44,5 @@ fn dirac() {
 
     let result = fft.inverse(complex_buffer_c);
 
-    assert_approx_eq!(result[12] * 256.0, 0.25, 0.0001);
+    assert_approx_eq!(result[index * 2] , 0.25 * 256.0, 0.0001);
 }
