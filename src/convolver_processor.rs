@@ -66,9 +66,8 @@ impl TProcessor for ConvolutionProcessor{
                 panic!("the length of target and to_add Vec do not match");
             }
 
-            let normalizer = target.len() as f32;
             for (i, value) in target.iter_mut().enumerate() {
-                *value += to_add[i] / normalizer;
+                *value += to_add[i];
             }
         }
     }

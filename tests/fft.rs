@@ -15,13 +15,13 @@ use rdsp::fourier_transform::*;
 #[case::block_size2048(2048)]
 fn forward_inverse(#[case] size: usize) {
     let fft: Fft = Fft::new(size);
-    let mut buffer: Vec<f32> = vec![0.0; size];
+    let mut buffer: Vec<f32> = vec![0.0; size * 2];
     buffer[30] = 1.0;
 
     let complex_buffer = fft.forward(&buffer);
     let result = fft.inverse(&complex_buffer);
 
-    assert_approx_eq!(result[30], 1.0 * size as f32, 0.0001);
+    assert_approx_eq!(result[30], 1.0 as f32, 0.0001);
 }
 
 #[rstest]
@@ -30,7 +30,7 @@ fn forward_inverse(#[case] size: usize) {
 #[case::dirac_100(100)]
 #[case::dirac_127(127)]
 fn dirac(#[case] index: usize) {
-    let fft: Fft = Fft::new(256);
+    let fft: Fft = Fft::new(128);
     let mut buffer: Vec<f32> = vec![0.0; 256];
     buffer[index] = 0.5;
 
@@ -44,5 +44,5 @@ fn dirac(#[case] index: usize) {
 
     let result = fft.inverse(&complex_buffer_c);
 
-    assert_approx_eq!(result[index * 2] , 0.25 * 256.0, 0.0001);
+    assert_approx_eq!(result[index * 2] , 0.25, 0.0001);
 }

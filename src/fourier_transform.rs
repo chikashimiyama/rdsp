@@ -12,8 +12,8 @@ pub struct Fft {
 impl Fft{
     pub fn new(block_size: usize) -> Self {
         Self {
-            forward: Radix4::new(block_size, FftDirection::Forward),
-            inverse: Radix4::new(block_size, FftDirection::Inverse),
+            forward: Radix4::new(block_size * 2, FftDirection::Forward),
+            inverse: Radix4::new(block_size * 2, FftDirection::Inverse),
         }
     }
 }
@@ -54,7 +54,7 @@ impl TFft for Fft {
             let length = complex_buffer.len();
             let mut buffer : Vec<f32> = vec![0.0; length];
             for i in 0..length {
-                buffer[i] = complex_buffer[i].re;
+                buffer[i] = complex_buffer[i].re / length as f32;
             }
             buffer
         }

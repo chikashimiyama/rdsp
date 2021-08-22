@@ -12,7 +12,7 @@ impl BlockRing {
         debug_assert!(block_size > 0 && num_blocks > 0, "both block size and num blocks should be greater than 0");
 
         Self{
-            buffer : vec![vec![Complex::new(0.0, 0.0); block_size]; num_blocks],
+            buffer : vec![vec![Complex::new(0.0, 0.0); block_size * 2]; num_blocks],
             write_index : num_blocks - 1,
             count : 0
         }
