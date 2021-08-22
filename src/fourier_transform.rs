@@ -45,7 +45,7 @@ impl TFft for Fft {
         }
     }
 
-    fn inverse(&self, complex_buffer: Vec<Complex>) -> Vec<f32> {
+    fn inverse(&self, complex_buffer: &Vec<Complex>) -> Vec<f32> {
         let mut rustfft_complex_buffer = convert_to_rustfft(&complex_buffer);
         self.inverse.process(&mut rustfft_complex_buffer);
         return to_buffer(&rustfft_complex_buffer);

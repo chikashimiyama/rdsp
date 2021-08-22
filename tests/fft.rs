@@ -19,7 +19,7 @@ fn forward_inverse(#[case] size: usize) {
     buffer[30] = 1.0;
 
     let complex_buffer = fft.forward(&buffer);
-    let result = fft.inverse(complex_buffer);
+    let result = fft.inverse(&complex_buffer);
 
     assert_approx_eq!(result[30], 1.0 * size as f32, 0.0001);
 }
@@ -42,7 +42,7 @@ fn dirac(#[case] index: usize) {
         complex_buffer_c[i] = complex_buffer_a[i] * complex_buffer_b[i];
     }
 
-    let result = fft.inverse(complex_buffer_c);
+    let result = fft.inverse(&complex_buffer_c);
 
     assert_approx_eq!(result[index * 2] , 0.25 * 256.0, 0.0001);
 }

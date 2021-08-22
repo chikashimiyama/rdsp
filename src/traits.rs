@@ -20,5 +20,5 @@ pub trait TComplexIR: TIterator<Complex>{
 #[automock]
 pub trait TFft {
     fn forward(&self, buffer: &Vec<f32>) -> Vec<Complex>;
-    fn inverse(&self, complex_buffer: Vec<Complex>)-> Vec<f32>;
+    fn inverse(&self, complex_buffer: &Vec<Complex>)-> Vec<f32>;
 }
