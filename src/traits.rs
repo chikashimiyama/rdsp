@@ -7,9 +7,7 @@ pub trait TProcessor
 }
 
 pub trait TIterator<T> {
-    fn next(&mut self)->Option<&Vec<T>>;
-    fn reset(&mut self);
-    fn len(&self)->usize;
+    fn next(&mut self)->&Vec<T>;
 }
 
 pub trait TBlockRing : TIterator<Complex>{

@@ -30,7 +30,7 @@ impl ComplexIR {
 
         ComplexIR {
             complex_blocks,
-            count: 0
+            count: num_blocks-1
         }
     }
 }
@@ -38,21 +38,9 @@ impl ComplexIR {
 impl TComplexIR for ComplexIR {}
 
 impl TIterator<Complex> for ComplexIR {
-    fn next(&mut self) -> Option<&Vec<Complex>> {
-        if self.count >= self.complex_blocks.len(){
-            return None
-        }
-        let complex = &self.complex_blocks[self.count];
-        self.count += 1;
-        Some(complex)
-    }
-
-    fn reset(&mut self) {
-        self.count = 0;
-    }
-
-    fn len(&self) -> usize {
-        self.complex_blocks.len()
+    fn next(&mut self)  -> &Vec<Complex> {
+        self.count = (self.count + 1) % self.complex_blocks.len();
+        &self.complex_blocks[self.count]
     }
 }
 
