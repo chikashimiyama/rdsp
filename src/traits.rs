@@ -1,8 +1,7 @@
 use crate::complex::Complex;
 use mockall::*;
 
-pub trait TProcessor
-{
+pub trait TProcessor {
     fn process(&mut self, input: &mut Vec<f32>);
 }
 

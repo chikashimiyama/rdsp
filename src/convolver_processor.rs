@@ -40,8 +40,8 @@ impl TProcessor for ConvolutionProcessor{
         }
 
         self.block_ring.push(self.fft.forward(&self.double_size_buffer));
-        self.accumulation_buffer.fill(0.0);
 
+        self.accumulation_buffer.fill(0.0);
         for _ in 0..self.num_blocks{
             let input_block = self.block_ring.next();
             let filter_block = self.complex_ir.next();
@@ -58,8 +58,6 @@ impl TProcessor for ConvolutionProcessor{
             input[i] = self.accumulation_buffer[i] + self.previous_second_half[i];
             self.previous_second_half[i] = self.accumulation_buffer[i + self.block_size];
         }
-
-
 
         fn accumulate(target: &mut Vec<f32>, to_add: &Vec<f32>) {
             if target.len() != to_add.len() {
