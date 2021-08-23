@@ -1,15 +1,3 @@
-[package]
-name = "rdsp"
-version = "0.1.0"
-authors = ["Chikashi Miyama <chikashimiyama@gmail.com>"]
-edition = "2018"
+[workspace]
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[dependencies]
-rustfft = "6.0.1"
-mockall = "0.10.2"
-
-[dev-dependencies]
-assert_approx_eq = "1.1.0"
-rstest = "0.10.0"
+members = ["rdsp", "cbinding"]
