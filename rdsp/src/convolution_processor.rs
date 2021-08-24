@@ -33,7 +33,7 @@ impl <I: TComplexIR, B:TBlockRing, F:TFft> ConvolutionProcessor<I, B, F>{
 }
 
 impl TProcessor for ConvolutionProcessor{
-    fn process(&mut self, input: &mut Vec<f32>) {
+    fn process(&mut self, input: &mut [f32]) {
 
         for (i, value) in input.iter().enumerate(){
             self.double_size_buffer[i] = *value;

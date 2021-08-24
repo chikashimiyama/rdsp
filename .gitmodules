@@ -1,0 +1,12 @@
+[submodule "cbinding/ctest/googletest"]
+	path = cbinding/ctest/googletest
+	url = https://github.com/google/googletest.git
+[submodule "cbinding/ctest/benchmark"]
+	path = cbinding/ctest/benchmark
+	url = https://github.com/google/benchmark.git
+[submodule "cbinding/ctest/Thirdparty/benchmark"]
+	path = cbinding/ctest/Thirdparty/benchmark
+	url = https://github.com/google/benchmark.git
+[submodule "cbinding/ctest/Thirdparty/googletest"]
+	path = cbinding/ctest/Thirdparty/googletest
+	url = https://github.com/google/googletest.git

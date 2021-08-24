@@ -8,7 +8,7 @@ edition = "2018"
 crate-type =["staticlib"]
 
 [dependencies]
-cbindgen = "0.20.0"
 rdsp = { path = "../rdsp" }
 
-
+[build-dependencies]
+cbindgen = "0.20.0"

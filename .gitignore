@@ -1,3 +1,5 @@
 /Cargo.lock
 .idea
 target
+cbinding/ctest/cmake-build-debug
+cbinding/ctest/cmake-build-release

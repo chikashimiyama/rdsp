@@ -2,7 +2,7 @@ use crate::complex::Complex;
 use mockall::*;
 
 pub trait TProcessor {
-    fn process(&mut self, input: &mut Vec<f32>);
+    fn process(&mut self, input: &mut [f32]);
 }
 
 pub trait TIterator<T> {
